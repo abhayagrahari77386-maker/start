@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Voice Clone Avatar — Create a talking AI avatar with your cloned voice and lip-synced video.">
+    <title>🎭 Voice Clone AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎭</text></svg>">
+</head>
+<body>
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="app-container">
+        <!-- ── Header ─────────────────────────────── -->
+        <header class="app-header" id="appHeader">
+            <div class="app-logo">
+                <span class="icon">🎭</span>
+                <div>
+                    <h1>Voice Clone AI</h1>
+                    <span class="subtitle">Human-like AI Avatar with Voice Cloning</span>
+                </div>
+            </div>
+
+            <div class="api-status" id="apiStatus">
+                <div class="status-dot">
+                    <span class="dot" id="dotOpenai"></span>
+                    <span>OpenAI</span>
+                </div>
+                <div class="status-dot">
+                    <span class="dot" id="dotElevenlabs"></span>
+                    <span>ElevenLabs</span>
+                </div>
+                <div class="status-dot">
+                    <span class="dot" id="dotSync"></span>
+                    <span>Sync.so</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="header-btn" id="btnClear" onclick="clearSession()">
+                    🗑️ Clear
+                </button>
+            </div>
+        </header>
+
+        <!-- ── Main Layout ────────────────────────── -->
+        <div class="main-layout">
+            <!-- Left Panel: Setup + Avatar -->
+            <div class="left-panel">
+                <!-- Avatar Preview -->
+                <div class="avatar-preview">
+                    <div class="avatar-frame" id="avatarFrame">
+                        <div class="placeholder" id="avatarPlaceholder">
+                            <span class="icon">👤</span>
+                            <span>Upload a face image</span>
+                        </div>
+                        <img id="avatarImage" style="display: none;" alt="Avatar face">
+                        <video id="avatarVideo" style="display: none;" autoplay loop muted></video>
+                    </div>
+
+                    <div class="avatar-status">
+                        <div class="status-item">
+                            <span class="label">🎤 Voice</span>
+                            <span class="value pending" id="voiceStatus">Not uploaded</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">📸 Face</span>
+                            <span class="value pending" id="faceStatus">Not uploaded</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">🧬 Clone</span>
+                            <span class="value pending" id="cloneStatus">Not ready</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Setup: Upload Voice -->
+                <div class="setup-panel">
+                    <h3>🎙️ Voice Sample</h3>
+                    <div class="upload-zone" id="voiceUploadZone">
+                        <span class="icon">🎵</span>
+                        <div class="text">
+                            <strong>Click to upload</strong> or drag & drop
+                        </div>
+                        <div class="hint">MP3 or WAV • 30 seconds+ recommended</div>
+                        <input type="file" id="voiceFileInput" accept="audio/*">
+                    </div>
+                    <div class="upload-filename" id="voiceFileName" style="display: none;">
+                        ✅ <span></span>
+                    </div>
+                </div>
+
+                <!-- Setup: Upload Face -->
+                <div class="setup-panel">
+                    <h3>📸 Face Image</h3>
+                    <div class="upload-zone" id="faceUploadZone">
+                        <span class="icon">🖼️</span>
+                        <div class="text">
+                            <strong>Click to upload</strong> or drag & drop
+                        </div>
+                        <div class="hint">JPG or PNG • Clear front-facing photo</div>
+                        <input type="file" id="faceFileInput" accept="image/*">
+                    </div>
+                    <div class="upload-filename" id="faceFileName" style="display: none;">
+                        ✅ <span></span>
+                    </div>
+                </div>
+
+                <!-- Setup Button -->
+                <button class="btn-setup" id="btnSetup" onclick="setupAvatar()" disabled>
+                    🚀 Clone Voice & Setup Avatar
+                </button>
+            </div>
+
+            <!-- Right Panel: Chat -->
+            <div class="panel chat-panel">
+                <div class="panel-header">
+                    <h2>💬 Chat</h2>
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="modeText" onclick="setMode('text')">
+                            💬 Text + Audio
+                        </button>
+                        <button class="mode-btn" id="modeFull" onclick="setMode('full')">
+                            🎬 Full Video
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat Messages -->
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-welcome" id="chatWelcome">
+                        <span class="welcome-icon">🎭</span>
+                        <h3>Welcome to Voice Clone AI</h3>
+                        <p>Upload a voice sample and face image on the left to get started. Then chat with your AI avatar!</p>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <textarea
+                            class="chat-input"
+                            id="chatInput"
+                            placeholder="Type your message... (Enter to send)"
+                            rows="1"
+                            disabled
+                        ></textarea>
+                        <button class="btn-send" id="btnSend" onclick="sendMessage()" disabled>
+                            🚀
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
